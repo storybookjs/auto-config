@@ -1,0 +1,39 @@
+{
+    "name": "configuration-helper",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.js",
+    "bin": "./index.js",
+    "scripts": {
+        "build": "tsup",
+        "build:watch": "tsup --watch",
+        "test": "vitest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.22.9",
+        "@babel/traverse": "^7.22.8",
+        "@babel/types": "^7.22.5",
+        "@storybook/csf-tools": "^7.2.0",
+        "@storybook/types": "^7.2.0",
+        "@types/node": "^20.4.5",
+        "@types/prompts": "^2.4.4",
+        "auto": "^11.0.0",
+        "boxen": "^7.1.1",
+        "dedent": "^1.5.1",
+        "prettier": "^3.0.0",
+        "prompts": "^2.4.2",
+        "recast": "^0.23.3",
+        "rimraf": "^5.0.1",
+        "tsup": "^7.1.0",
+        "typescript": "^5.1.6",
+        "vite": "^4.4.8",
+        "vitest": "^0.33.0",
+        "webpack": "^5.88.2"
+    },
+    "dependencies": {
+        "@storybook/node-logger": "^7.2.0"
+    }
+}
