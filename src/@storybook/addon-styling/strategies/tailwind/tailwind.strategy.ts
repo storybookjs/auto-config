@@ -1,6 +1,7 @@
 import { colors } from '@storybook/node-logger';
+import prompt from 'prompts';
 
-import { createNode } from '../../../../utils/ast.utils';
+import { addImports, createNode } from '../../../../utils/ast.utils';
 
 import { AddonStylingConfigurationStrategy, CONFIGURATION_STRATEGY_KEYS } from '../../types';
 import { buildAddonConfig } from '../../configure';
@@ -25,8 +26,28 @@ export const tailwindStrategy: AddonStylingConfigurationStrategy = {
         mainConfig.appendNodeToArray(['addons'], addonConfigNode.expression);
 
         return {
-            changed: [`Configured ${colors.blue.bold('postcss')} for ${colors.blue.bold('webpack')}`],
-            nextSteps: [`🚀 Launch ${colors.pink.bold('storybook')}`],
+            changed: [`Configured ${colors.blue.bold('PostCSS')} for ${colors.blue.bold('Webpack')}`],
+            nextSteps: [],
+        };
+    },
+    preview: async (previewConfig, meta) => {
+        const { importPath } = await prompt(
+            {
+                type: 'text',
+                name: 'importPath',
+                message: 'Where is your global CSS file? (relative to the .storybook folder)',
+                initial: '../src/tailwind.css',
+            },
+            { onCancel: () => process.exit(1) },
+        );
+
+        const globalCssImport = createNode(`import '${importPath}';`);
+
+        addImports(previewConfig._ast, globalCssImport);
+
+        return {
+            changed: [`Imported your global CSS into ${colors.blue.bold(previewConfig.fileName)}`],
+            nextSteps: [],
         };
     },
 };

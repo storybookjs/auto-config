@@ -1,7 +1,9 @@
 import { writeConfig } from '@storybook/csf-tools';
 import { JsPackageManagerFactory } from '@storybook/cli';
+import { colors } from '@storybook/node-logger';
+import dedent from 'dedent';
 
-import { printWelcome } from '../../utils/output.utils';
+import { printInfo, printWelcome } from '../../utils/output.utils';
 import { isGitClean } from '../../utils/git.utils';
 import { commonQuestions } from '../../utils/prompts.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
@@ -38,6 +40,15 @@ const autoConfigure = async ({}: Options = {}) => {
     // Step 4: Determine configuration strategy
     const strategy = selectAddonStylingStrategy(projectMeta);
 
+    if (strategy.name !== 'custom') {
+        printInfo(
+            `🔎 I found something to configure`,
+            dedent`Configuring your Storybook for "${colors.blue.bold(strategy.name)}".
+        
+            Hold on for a second while I make some changes...`,
+        );
+    }
+
     const summary: ConfigSummary = {
         strategy: strategy.name,
         changed: [],
@@ -62,6 +73,8 @@ const autoConfigure = async ({}: Options = {}) => {
         summary.changed.push(...changed);
         summary.nextSteps.push(...nextSteps);
     }
+
+    summary.nextSteps.push(`🚀 Launch ${colors.pink.bold('Storybook')}`);
 
     // Step 7: End of script
     printScriptSummary(summary);

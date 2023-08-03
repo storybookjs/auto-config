@@ -8,7 +8,7 @@ export const printWelcome = (packageName: string) => {
         boxen(
             dedent`I'm the configuration helper for "${colors.pink.bold(packageName)}"!
     
-            Hold on for a moment while I look at your project and get you all set up.`,
+            Hold on for a moment while I look at your project and get you all set up...`,
             {
                 title: '👋 Hi there',
                 titleAlignment: 'left',
@@ -17,6 +17,19 @@ export const printWelcome = (packageName: string) => {
                 padding: 1,
             },
         ),
+    );
+    logger.line(1);
+};
+
+export const printInfo = (title: string, message: string) => {
+    logger.line(1);
+    logger.plain(
+        boxen(message, {
+            title,
+            padding: 1,
+            borderColor: 'blue',
+            borderStyle: 'double',
+        }),
     );
     logger.line(1);
 };

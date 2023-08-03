@@ -33,8 +33,8 @@ export const vanillaExtractStrategy: AddonStylingConfigurationStrategy = {
         mainConfig.appendNodeToArray(['addons'], addonConfigNode);
 
         return {
-            changed: [`Configured ${colors.blue.bold('postcss')} for ${colors.blue.bold('webpack')}`],
-            nextSteps: [`🚀 Launch ${colors.pink.bold('storybook')}`],
+            changed: [`Configured ${colors.blue.bold('Vanilla-extract')} for ${colors.pink.bold('Storybook')}`],
+            nextSteps: [],
         };
     },
 };
