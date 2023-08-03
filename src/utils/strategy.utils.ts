@@ -1,5 +1,5 @@
-import { PackageJson } from '@storybook/types';
 import type { ConfigFile } from '@storybook/csf-tools';
+import type { JsPackageManager } from '@storybook/cli';
 
 export const SUPPORTED_BUILDERS = {
     VITE: 'vite',
@@ -9,9 +9,7 @@ export const SUPPORTED_BUILDERS = {
 export type SupportedBuilders = (typeof SUPPORTED_BUILDERS)[keyof typeof SUPPORTED_BUILDERS];
 
 export interface StorybookProjectMeta {
-    dependencies: PackageJson['dependencies'];
-    devDependencies: PackageJson['devDependencies'];
-    peerDependencies: PackageJson['peerDependencies'];
+    packageManager: JsPackageManager;
     builder: SupportedBuilders;
     framework: string;
 }
@@ -31,7 +29,7 @@ export interface ToolConfigurationStrategy<StrategyNames extends string> {
      * @param packageJson The project's package.json
      * @returns {boolean} whether the project has the tool
      */
-    predicate: (packageJson: PackageJson) => Boolean;
+    predicate: ({ packageManager }: StorybookProjectMeta) => Promise<Boolean>;
     /**
      * Transform function for a `.storybook/main.ts` file
      * @param mainConfig Babel AST for the main.ts file

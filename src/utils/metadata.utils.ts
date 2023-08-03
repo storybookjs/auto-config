@@ -1,17 +1,7 @@
-import type { PackageJson } from '@storybook/types';
 import type { ConfigFile } from '@storybook/csf-tools';
+import type { JsPackageManager } from '@storybook/cli';
+
 import { SUPPORTED_BUILDERS, StorybookProjectMeta, SupportedBuilders } from './strategy.utils';
-
-const pluckDependencies = ({ dependencies = {}, devDependencies = {}, peerDependencies = {} }: PackageJson) => ({
-    dependencies,
-    devDependencies,
-    peerDependencies,
-});
-
-export const hasDependency = (
-    { dependencies = {}, devDependencies = {}, peerDependencies = {} }: PackageJson | StorybookProjectMeta,
-    depName: string,
-): boolean => !!dependencies[depName] || !!devDependencies[depName] || !!peerDependencies[depName];
 
 const getFramework = (mainConfig: ConfigFile): string => {
     const frameworkValue = mainConfig.getFieldValue(['framework']);
@@ -27,8 +17,11 @@ const determineBuilder = (mainConfig: ConfigFile): SupportedBuilders => {
         : SUPPORTED_BUILDERS.WEBPACK;
 };
 
-export const buildStorybookProjectMeta = (mainConfig: ConfigFile, packageJson: PackageJson): StorybookProjectMeta => ({
-    ...pluckDependencies(packageJson),
+export const buildStorybookProjectMeta = async (
+    mainConfig: ConfigFile,
+    packageManager: JsPackageManager,
+): Promise<StorybookProjectMeta> => ({
+    packageManager: packageManager,
     builder: determineBuilder(mainConfig),
     framework: getFramework(mainConfig),
 });

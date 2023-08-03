@@ -1,17 +1,18 @@
-import { PackageJson } from '@storybook/types';
 import { writeConfig } from '@storybook/csf-tools';
+import { JsPackageManagerFactory } from '@storybook/cli';
 
 import { printWelcome } from '../../utils/output.utils';
 import { isGitClean } from '../../utils/git.utils';
 import { commonQuestions } from '../../utils/prompts.utils';
-import { getPackageJson } from '../../utils/package-json.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
 import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
 import { selectAddonStylingStrategy } from './strategies';
 import { ConfigSummary, Errors, printScriptSummary } from './helpers';
 
-const automigrate = async () => {
+export interface Options {}
+
+const autoConfigure = async ({}: Options = {}) => {
     printWelcome('@storybook/addon-styling');
 
     const isGitDirty = (await isGitClean()) === false;
@@ -21,13 +22,13 @@ const automigrate = async () => {
         if (shouldQuit) return;
     }
 
-    // Step 1: load package.json and Storybook config files
-    const packageJson: PackageJson = getPackageJson();
+    // Step 1: load Storybook config files
+    const packageManager = JsPackageManagerFactory.getPackageManager();
     const mainConfig = await getMainConfig();
     const previewConfig = await getPreviewConfig();
 
     // Step 3: Build project meta
-    const projectMeta = buildStorybookProjectMeta(mainConfig, packageJson);
+    const projectMeta = await buildStorybookProjectMeta(mainConfig, packageManager);
 
     if (Builder.isNot.webpack(projectMeta)) {
         Errors.unsupportedBuilder();
@@ -66,4 +67,4 @@ const automigrate = async () => {
     printScriptSummary(summary);
 };
 
-export default automigrate;
+export default autoConfigure;
