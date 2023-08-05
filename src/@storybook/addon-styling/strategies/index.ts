@@ -7,5 +7,8 @@ import { customStrategy } from './custom/custom.strategy';
 
 const AUTO_CONFIG_STRATEGIES: AddonStylingConfigurationStrategy[] = [tailwindStrategy, vanillaExtractStrategy];
 
-export const selectAddonStylingStrategy = (packageJson: StorybookProjectMeta) =>
-    AUTO_CONFIG_STRATEGIES.find(({ predicate }) => predicate(packageJson)) ?? customStrategy;
+export const selectAddonStylingStrategy = async ({ packageManager }: StorybookProjectMeta) => {
+    const deps = await packageManager.getAllDependencies();
+
+    return AUTO_CONFIG_STRATEGIES.find(({ predicate }) => predicate(deps)) ?? customStrategy;
+};

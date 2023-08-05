@@ -29,7 +29,7 @@ export interface ToolConfigurationStrategy<StrategyNames extends string> {
      * @param packageJson The project's package.json
      * @returns {boolean} whether the project has the tool
      */
-    predicate: ({ packageManager }: StorybookProjectMeta) => Promise<Boolean>;
+    predicate: (deps: Record<string, string>) => Boolean;
     /**
      * Transform function for a `.storybook/main.ts` file
      * @param mainConfig Babel AST for the main.ts file

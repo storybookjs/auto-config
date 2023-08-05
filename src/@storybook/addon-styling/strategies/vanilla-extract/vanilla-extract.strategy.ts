@@ -4,13 +4,8 @@ import { createNode, addImports } from '../../../../utils/ast.utils';
 
 import { AddonStylingConfigurationStrategy, CONFIGURATION_STRATEGY_KEYS } from '../../types';
 import { buildImports, buildAddonConfig } from '../../configure';
-import { StorybookProjectMeta } from 'src/utils/strategy.utils';
 
-const projectHasVanillaExtract = async ({ packageManager }: StorybookProjectMeta) => {
-    const deps = await packageManager.getAllDependencies();
-
-    return !!deps['@vanilla-extract/css'];
-};
+const projectHasVanillaExtract = (deps: Record<string, string>) => Boolean(deps['@vanilla-extract/css']);
 
 export const vanillaExtractStrategy: AddonStylingConfigurationStrategy = {
     name: CONFIGURATION_STRATEGY_KEYS.VANILLA_EXTRACT,

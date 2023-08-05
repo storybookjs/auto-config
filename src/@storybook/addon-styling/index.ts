@@ -30,7 +30,7 @@ const autoConfigure = async ({}: Options = {}) => {
     const previewConfig = await getPreviewConfig();
 
     // Step 3: Build project meta
-    const projectMeta = await buildStorybookProjectMeta(mainConfig, packageManager);
+    const projectMeta = buildStorybookProjectMeta(mainConfig, packageManager);
 
     if (Builder.isNot.webpack(projectMeta)) {
         Errors.unsupportedBuilder();
@@ -38,7 +38,7 @@ const autoConfigure = async ({}: Options = {}) => {
     }
 
     // Step 4: Determine configuration strategy
-    const strategy = selectAddonStylingStrategy(projectMeta);
+    const strategy = await selectAddonStylingStrategy(projectMeta);
 
     if (strategy.name !== 'custom') {
         printInfo(

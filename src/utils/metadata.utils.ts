@@ -17,11 +17,11 @@ const determineBuilder = (mainConfig: ConfigFile): SupportedBuilders => {
         : SUPPORTED_BUILDERS.WEBPACK;
 };
 
-export const buildStorybookProjectMeta = async (
+export const buildStorybookProjectMeta = (
     mainConfig: ConfigFile,
     packageManager: JsPackageManager,
-): Promise<StorybookProjectMeta> => ({
-    packageManager: packageManager,
+): StorybookProjectMeta => ({
+    packageManager,
     builder: determineBuilder(mainConfig),
     framework: getFramework(mainConfig),
 });

@@ -5,13 +5,8 @@ import { addImports, createNode } from '../../../../utils/ast.utils';
 
 import { AddonStylingConfigurationStrategy, CONFIGURATION_STRATEGY_KEYS } from '../../types';
 import { buildAddonConfig } from '../../configure';
-import { StorybookProjectMeta } from 'src/utils/strategy.utils';
 
-const projectHasTailwind = async ({ packageManager }: StorybookProjectMeta) => {
-    const deps = await packageManager.getAllDependencies();
-
-    return !!deps['tailwindcss'] && !!deps['postcss'];
-};
+const projectHasTailwind = (deps: Record<string, string>) => Boolean(deps['tailwindcss']) && Boolean(deps['postcss']);
 
 export const tailwindStrategy: AddonStylingConfigurationStrategy = {
     name: CONFIGURATION_STRATEGY_KEYS.TAILWIND,
