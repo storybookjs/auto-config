@@ -10,7 +10,7 @@ import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
 import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
 import { selectAddonStylingStrategy } from './strategies';
-import { ConfigSummary, Errors, printScriptSummary } from './helpers';
+import { ConfigSummary, Errors, printPackageManagerCommand, printScriptSummary } from './helpers';
 
 export interface Options {}
 
@@ -74,7 +74,8 @@ const autoConfigure = async ({}: Options = {}) => {
         summary.nextSteps.push(...nextSteps);
     }
 
-    summary.nextSteps.push(`🚀 Launch ${colors.pink.bold('Storybook')}`);
+    const sbCommand = printPackageManagerCommand(packageManager, 'storybook');
+    summary.nextSteps.push(`🚀 Run: ${colors.green.bold(sbCommand)}`);
 
     // Step 7: End of script
     printScriptSummary(summary);

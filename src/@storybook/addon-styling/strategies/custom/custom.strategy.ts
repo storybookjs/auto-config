@@ -1,5 +1,6 @@
 import { colors } from '@storybook/node-logger';
 import prompts from 'prompts';
+import dedent from 'dedent';
 
 import { buildAddonConfig, buildImports } from '../../configure';
 import {
@@ -19,8 +20,9 @@ export const customStrategy: AddonStylingConfigurationStrategy = {
     main: async (mainConfig, meta) => {
         printWarning(
             '💬 I need your help',
-            `I didn't recognize any styling tools in your project that I know how to configure.
-      Here's a list of things I know how to configure...`,
+            dedent`I didn't recognize any styling tools in your project that I know how to configure.
+            
+            Here's a list of things I know how to configure...`,
         );
 
         const { configurations = [] } = await prompts(
@@ -73,7 +75,7 @@ export const customStrategy: AddonStylingConfigurationStrategy = {
 
         return {
             changed: [...configuredTools],
-            nextSteps: [`🚀 Launch ${colors.pink.bold('storybook')}`],
+            nextSteps: [],
         };
     },
 };

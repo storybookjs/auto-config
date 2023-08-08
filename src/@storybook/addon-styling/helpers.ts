@@ -4,6 +4,7 @@ import dedent from 'dedent';
 import { printError, printSuccess } from '../../utils/output.utils';
 import { ChangeSummary } from '../../utils/strategy.utils';
 import { ConfigurationStrategies } from './types';
+import { JsPackageManager } from '@storybook/cli';
 
 const printUnsupportedBuilderError = () => {
     printError(
@@ -36,4 +37,17 @@ ${summary.nextSteps.map((step) => `  - ${step}`).join('\n')}`;
 
 export const printScriptSummary = (summary: ConfigSummary) => {
     printSuccess(buildSummary(summary));
+};
+
+const PACKAGE_MANAGER_TO_RUN_COMMAND: Record<JsPackageManager['type'], string> = {
+    npm: 'npm run',
+    yarn1: 'yarn',
+    yarn2: 'yarn',
+    pnpm: 'pnpm run',
+};
+
+export const printPackageManagerCommand = (packageManager: JsPackageManager, command: string) => {
+    const type = packageManager.type;
+
+    return `${PACKAGE_MANAGER_TO_RUN_COMMAND[type]} ${command}`;
 };
