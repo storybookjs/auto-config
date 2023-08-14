@@ -1,10 +1,7 @@
 import { colors } from '@storybook/node-logger';
 import dedent from 'dedent';
 
-import { printError, printSuccess } from '../../utils/output.utils';
-import { ChangeSummary } from '../../utils/strategy.utils';
-import { ConfigurationStrategies } from './types';
-import { JsPackageManager } from '@storybook/cli';
+import { ConfigSummary, printError } from '../../utils/output.utils';
 
 const printUnsupportedBuilderError = () => {
     printError(
@@ -18,11 +15,7 @@ export const Errors = {
     unsupportedBuilder: printUnsupportedBuilderError,
 };
 
-export interface ConfigSummary extends ChangeSummary {
-    strategy: ConfigurationStrategies;
-}
-
-const buildSummary = (summary: ConfigSummary) =>
+export const buildSummary = (summary: ConfigSummary) =>
     `${
         summary.strategy === 'custom'
             ? "I configured Storybook's Webpack as you asked!"
@@ -34,20 +27,3 @@ ${summary.changed.map((change) => `  - ${change}`).join('\n')}
   
 ${colors.purple.bold('Next steps:')}
 ${summary.nextSteps.map((step) => `  - ${step}`).join('\n')}`;
-
-export const printScriptSummary = (summary: ConfigSummary) => {
-    printSuccess(buildSummary(summary));
-};
-
-const PACKAGE_MANAGER_TO_RUN_COMMAND: Record<JsPackageManager['type'], string> = {
-    npm: 'npm run',
-    yarn1: 'yarn',
-    yarn2: 'yarn',
-    pnpm: 'pnpm run',
-};
-
-export const printPackageManagerCommand = (packageManager: JsPackageManager, command: string) => {
-    const type = packageManager.type;
-
-    return `${PACKAGE_MANAGER_TO_RUN_COMMAND[type]} ${command}`;
-};

@@ -4,24 +4,24 @@ import { colors } from '@storybook/node-logger';
 import dedent from 'dedent';
 
 import {
-    printInfo,
     printWelcome,
     ConfigSummary,
     buildPackageManagerCommand,
     printScriptSummary,
+    printWarning,
 } from '../../utils/output.utils';
 import { isGitClean } from '../../utils/git.utils';
 import { commonQuestions } from '../../utils/prompts.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
 import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
-import { selectAddonStylingStrategy } from './strategies';
-import { Errors, buildSummary } from './helpers';
+import { selectAddonThemesStrategy } from './strategies';
+import { buildSummary } from './helpers';
 
 export interface Options {}
 
 const autoConfigure = async ({}: Options = {}) => {
-    printWelcome('@storybook/addon-styling');
+    printWelcome('@storybook/addon-themes');
 
     const isGitDirty = (await isGitClean()) === false;
 
@@ -38,21 +38,18 @@ const autoConfigure = async ({}: Options = {}) => {
     // Step 3: Build project meta
     const projectMeta = buildStorybookProjectMeta(mainConfig, packageManager);
 
-    if (Builder.isNot.webpack(projectMeta)) {
-        Errors.unsupportedBuilder();
-        return;
-    }
-
     // Step 4: Determine configuration strategy
-    const strategy = await selectAddonStylingStrategy(projectMeta);
+    const strategy = await selectAddonThemesStrategy(projectMeta);
 
-    if (strategy.name !== 'custom') {
-        printInfo(
-            `🔎 I found something to configure`,
-            dedent`Configuring your Storybook for "${colors.blue.bold(strategy.name)}".
-        
-            Hold on for a second while I make some changes...`,
+    if (!strategy) {
+        printWarning(
+            `❌ No theming tool recognized`,
+            dedent`To learn how to manually configure themes for your stories, visit our documentation.
+            
+            ${colors.blue('https://github.com/storybookjs/storybook/blob/main/code/addons/themes/docs/api.md')}`,
         );
+
+        process.exit(0);
     }
 
     const summary: ConfigSummary = {
@@ -82,6 +79,7 @@ const autoConfigure = async ({}: Options = {}) => {
 
     const sbCommand = buildPackageManagerCommand(packageManager, 'storybook');
     summary.nextSteps.push(`🚀 Run: ${colors.green.bold(sbCommand)}`);
+    summary.nextSteps.push(`💡 Switch between themes using the switcher in the Toolbar`);
 
     // Step 7: End of script
     printScriptSummary(buildSummary)(summary);

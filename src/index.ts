@@ -4,6 +4,7 @@ import leven from 'leven';
 import { logger, colors } from '@storybook/node-logger';
 
 import configureAddonStyling from './@storybook/addon-styling';
+import configureAddonThemes from './@storybook/addon-themes';
 import { PackageJson } from '@storybook/types';
 
 const pkg = readPackageUpSync({ cwd: __dirname }).packageJson as PackageJson;
@@ -31,7 +32,7 @@ command('themes')
         )}"`,
     )
     .action(() => {
-        logger.plain('🚧 This feature is not yet implemented.');
+        configureAddonThemes().catch(() => process.exit(1));
     });
 
 program.on('command:*', ([invalidCmd]) => {

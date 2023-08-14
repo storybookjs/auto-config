@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 
 import { tailwindStrategy } from './tailwind.strategy';
 import { SUPPORTED_BUILDERS, StorybookProjectMeta } from '../../../../utils/strategy.utils';
+import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
 describe('CODEMOD: tailwind configuration', () => {
     describe('PREDICATE: should project be configured for tailwind?', () => {
@@ -19,25 +20,24 @@ describe('CODEMOD: tailwind configuration', () => {
             expect(result).toBeTruthy();
         });
         it('FALSE: it should return false when tailwind is not found in package.json', () => {
-            const deps = {
-                bootstrap: 'latest',
+            const packageJson: PackageJson = {
+                dependencies: { bootstrap: 'latest' },
+                devDependencies: {},
             };
 
-            const result = tailwindStrategy.predicate(deps);
+            const result = tailwindStrategy.predicate(packageJson);
 
             expect(result).toBeFalsy();
         });
     });
 
     describe('MAIN: how should storybook be configured for tailwind', () => {
-        it('WEBPACK: addon-styling should be configured with postcss support', async () => {
+        it('WEBPACK: addon-themes should be added to the addons array', async () => {
             const mainConfig = await readConfig(
                 resolve(__dirname, '../../../../fixtures/main.react-webpack5.fixture.ts'),
             );
             const meta: StorybookProjectMeta = {
-                dependencies: { tailwindcss: 'latest' },
-                devDependencies: { postcss: ' latest' },
-                peerDependencies: {},
+                packageManager: mockPackageManager,
                 framework: '@storybook/react-webpack5',
                 builder: SUPPORTED_BUILDERS.WEBPACK,
             };
@@ -50,31 +50,7 @@ describe('CODEMOD: tailwind configuration', () => {
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", ({
-                  name: \\"@storybook/addon-styling\\",
-
-                  options: {
-                    rules: [{
-                  test: /\\\\.css$/,
-                  sideEffects: true,
-                  use: [
-                      require.resolve(\\"style-loader\\"),
-                      {
-                          loader: require.resolve(\\"css-loader\\"),
-                          options: {
-                              
-                              importLoaders: 1,
-                          },
-                      },{
-                loader: require.resolve(\\"postcss-loader\\"),
-                options: {
-                implementation: require.resolve(\\"postcss\\"),
-                },
-                },
-                  ],
-                },],
-                  },
-                })],
+                addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
@@ -82,6 +58,36 @@ describe('CODEMOD: tailwind configuration', () => {
                 docs: {
                   autodocs: true,
                 },
+              };
+              export default config;
+              "
+            `);
+        });
+
+        it('WEBPACK: addon-themes should not be added twice to the addons array', async () => {
+            const mainConfig = await readConfig(resolve(__dirname, '../../../../fixtures/main.with-themes.fixture.ts'));
+            const meta: StorybookProjectMeta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-webpack5',
+                builder: SUPPORTED_BUILDERS.WEBPACK,
+            };
+
+            tailwindStrategy.main(mainConfig, meta);
+
+            const result = babelPrint(mainConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { StorybookConfig } from '@storybook/react-webpack5';
+              const config: StorybookConfig = {
+                  stories: ['../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+                  addons: ['@storybook/addon-essentials', '@storybook/themes'],
+                  framework: {
+                      name: '@storybook/react-webpack5',
+                      options: {},
+                  },
+                  docs: {
+                      autodocs: true,
+                  },
               };
               export default config;
               "
