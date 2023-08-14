@@ -94,4 +94,47 @@ describe('[@storybook/addon-themes] CODEMOD: vanilla-extract configuration', () 
             `);
         });
     });
+
+    describe('PREVIEW: how should storybook be configured for vanilla-extract themes', () => {
+        it('CLASSNAME: withThemeByClassName should be added to preview', async () => {
+            const previewConfig = await readConfig(resolve(__dirname, '../../../../fixtures/preview.fixture.ts'));
+
+            const meta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-webpack5',
+                builder: SUPPORTED_BUILDERS.WEBPACK,
+            } satisfies StorybookProjectMeta;
+
+            await vanillaExtractStrategy.preview(previewConfig, meta);
+
+            const result = babelPrint(previewConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { Preview } from \\"@storybook/react\\";
+
+              import { withThemeByClassName } from \\"@storybook/addon-themes\\";
+
+              /* TODO: Update imports for Vanilla-extract theme class names  */
+              import { lightThemeClass, darkThemeClass } from \\"../src/theme.ts\\";
+
+              const preview: Preview = {
+                parameters: {
+                  theming: {},
+                },
+
+                decorators: [withThemeByClassName({
+                    themes: {
+                        // nameOfTheme: 'classNameForTheme',
+                        light: lightThemeClass,
+                        dark: darkThemeClass,
+                    },
+                    defaultTheme: 'light',
+                })],
+              };
+
+              export default preview;
+              "
+            `);
+        });
+    });
 });

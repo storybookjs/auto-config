@@ -34,15 +34,19 @@ export const vanillaExtractStrategy: AddonThemesConfigurationStrategy = {
             nextSteps: [],
         };
 
-        const globalCssImport = createNode(`import { withThemeByClassName } from "@storybook/addon-themes";`);
+        const globalCssImport = createNode(`
+import { withThemeByClassName } from "@storybook/addon-themes";
+
+/* TODO: Update imports for Vanilla-extract theme class names  */
+import { lightThemeClass, darkThemeClass } from "../src/theme.ts";`);
 
         addImports(previewConfig._ast, globalCssImport);
 
         const [decoratorNode] = createNode(`withThemeByClassName({
     themes: {
         // nameOfTheme: 'classNameForTheme',
-        light: '',
-        dark: 'dark',
+        light: lightThemeClass,
+        dark: darkThemeClass,
     },
     defaultTheme: 'light',
 })`);
@@ -50,7 +54,7 @@ export const vanillaExtractStrategy: AddonThemesConfigurationStrategy = {
         previewConfig.appendNodeToArray(['decorators'], decoratorNode.expression);
 
         summary.nextSteps.push(
-            `Import and add your themes classes to the decorator in ${colors.blue.bold(previewConfig.fileName)}`,
+            `Update the import for your Vanilla-extract theme classes in ${colors.blue.bold(previewConfig.fileName)}`,
         );
         summary.changed.push(`Added "${colors.pink.bold('withThemeByClassName')}" to your decorators`);
 
