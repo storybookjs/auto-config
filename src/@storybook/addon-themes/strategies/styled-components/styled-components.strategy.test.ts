@@ -6,7 +6,7 @@ import { styledComponentsStrategy } from './styled-components.strategy';
 import { SUPPORTED_BUILDERS, StorybookProjectMeta } from '../../../../utils/strategy.utils';
 import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
-describe('CODEMOD: Styled Components configuration', () => {
+describe('[@storybook/addon-themes] CODEMOD: Styled Components configuration', () => {
     describe('PREDICATE: should project be configured for Styled Components?', () => {
         it('TRUE: it should return true when Styled Components is found in package.json', () => {
             const deps = {
@@ -17,6 +17,7 @@ describe('CODEMOD: Styled Components configuration', () => {
 
             expect(result).toBeTruthy();
         });
+
         it('FALSE: it should return false when Styled Components is not found in package.json', () => {
             const deps = {
                 bootstrap: 'latest',
@@ -43,17 +44,48 @@ describe('CODEMOD: Styled Components configuration', () => {
             const result = babelPrint(mainConfig._ast);
 
             expect(result).toMatchInlineSnapshot(`
-              "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+          "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+          const config: StorybookConfig = {
+            stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
+            addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
+            framework: {
+              name: \\"@storybook/react-vite\\",
+              options: {},
+            },
+            docs: {
+              autodocs: true,
+            },
+          };
+          export default config;
+          "
+        `);
+        });
+
+        it('NO DUPLICATION: addon-themes should not be added more than once', async () => {
+            const mainConfig = await readConfig(resolve(__dirname, '../../../../fixtures/main.with-themes.fixture.ts'));
+
+            const meta: StorybookProjectMeta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-vite',
+                builder: SUPPORTED_BUILDERS.VITE,
+            };
+
+            styledComponentsStrategy.main(mainConfig, meta);
+
+            const result = babelPrint(mainConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { StorybookConfig } from '@storybook/react-webpack5';
               const config: StorybookConfig = {
-                stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
-                framework: {
-                  name: \\"@storybook/react-vite\\",
-                  options: {},
-                },
-                docs: {
-                  autodocs: true,
-                },
+                  stories: ['../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+                  addons: ['@storybook/addon-essentials', '@storybook/themes'],
+                  framework: {
+                      name: '@storybook/react-webpack5',
+                      options: {},
+                  },
+                  docs: {
+                      autodocs: true,
+                  },
               };
               export default config;
               "

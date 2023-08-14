@@ -6,7 +6,7 @@ import { emotionStrategy } from './emotion.strategy';
 import { SUPPORTED_BUILDERS, StorybookProjectMeta } from '../../../../utils/strategy.utils';
 import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
-describe('CODEMOD: Emotion configuration', () => {
+describe('[@storybook/addon-themes] CODEMOD: Emotion configuration', () => {
     describe('PREDICATE: should project be configured for Emotion?', () => {
         it('TRUE: it should return true when Emotion is found in package.json', () => {
             const deps = {
@@ -18,6 +18,7 @@ describe('CODEMOD: Emotion configuration', () => {
 
             expect(result).toBeTruthy();
         });
+
         it('FALSE: it should return false when Emotion is not found in package.json', () => {
             const deps = {
                 bootstrap: 'latest',
@@ -30,7 +31,7 @@ describe('CODEMOD: Emotion configuration', () => {
     });
 
     describe('MAIN: how should storybook be configured for Emotion', () => {
-        it('REGISTER: addon-themes should be registered in the addons array without options', async () => {
+        it('REGISTER: addon-themes should be registered in the addons array', async () => {
             const mainConfig = await readConfig(resolve(__dirname, '../../../../fixtures/main.react-vite.fixture.ts'));
             const meta: StorybookProjectMeta = {
                 packageManager: mockPackageManager,
@@ -43,17 +44,47 @@ describe('CODEMOD: Emotion configuration', () => {
             const result = babelPrint(mainConfig._ast);
 
             expect(result).toMatchInlineSnapshot(`
-              "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+          "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+          const config: StorybookConfig = {
+            stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
+            addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
+            framework: {
+              name: \\"@storybook/react-vite\\",
+              options: {},
+            },
+            docs: {
+              autodocs: true,
+            },
+          };
+          export default config;
+          "
+        `);
+        });
+
+        it('NO DUPLICATION: addon-themes should not be registered more than once', async () => {
+            const mainConfig = await readConfig(resolve(__dirname, '../../../../fixtures/main.with-themes.fixture.ts'));
+            const meta: StorybookProjectMeta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-vite',
+                builder: SUPPORTED_BUILDERS.VITE,
+            };
+
+            emotionStrategy.main(mainConfig, meta);
+
+            const result = babelPrint(mainConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { StorybookConfig } from '@storybook/react-webpack5';
               const config: StorybookConfig = {
-                stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
-                framework: {
-                  name: \\"@storybook/react-vite\\",
-                  options: {},
-                },
-                docs: {
-                  autodocs: true,
-                },
+                  stories: ['../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+                  addons: ['@storybook/addon-essentials', '@storybook/themes'],
+                  framework: {
+                      name: '@storybook/react-webpack5',
+                      options: {},
+                  },
+                  docs: {
+                      autodocs: true,
+                  },
               };
               export default config;
               "

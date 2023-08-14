@@ -7,7 +7,7 @@ import { tailwindStrategy } from './tailwind.strategy';
 import { SUPPORTED_BUILDERS, StorybookProjectMeta } from '../../../../utils/strategy.utils';
 import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
-describe('CODEMOD: tailwind configuration', () => {
+describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
     describe('PREDICATE: should project be configured for tailwind?', () => {
         it('TRUE: it should return true when tailwind is found in package.json', () => {
             const deps = {
@@ -32,7 +32,7 @@ describe('CODEMOD: tailwind configuration', () => {
     });
 
     describe('MAIN: how should storybook be configured for tailwind', () => {
-        it('WEBPACK: addon-themes should be added to the addons array', async () => {
+        it('REGISTER: addon-themes should be added to the addons array', async () => {
             const mainConfig = await readConfig(
                 resolve(__dirname, '../../../../fixtures/main.react-webpack5.fixture.ts'),
             );
@@ -64,7 +64,7 @@ describe('CODEMOD: tailwind configuration', () => {
             `);
         });
 
-        it('WEBPACK: addon-themes should not be added twice to the addons array', async () => {
+        it('NO DUPLICATION: addon-themes should not be added twice to the addons array', async () => {
             const mainConfig = await readConfig(resolve(__dirname, '../../../../fixtures/main.with-themes.fixture.ts'));
             const meta: StorybookProjectMeta = {
                 packageManager: mockPackageManager,

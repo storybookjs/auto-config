@@ -6,7 +6,7 @@ import { materialUIStrategy } from './material-ui.strategy';
 import { StorybookProjectMeta, SUPPORTED_BUILDERS } from '../../../../utils/strategy.utils';
 import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
-describe('CODEMOD: Material UI configuration', () => {
+describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
     describe('PREDICATE: should project be configured for Material UI?', () => {
         it('TRUE: it should return true when Material UI is found in package.json', () => {
             const deps = {
@@ -19,6 +19,7 @@ describe('CODEMOD: Material UI configuration', () => {
 
             expect(result).toBeTruthy();
         });
+
         it('FALSE: it should return false when Material UI is not found in package.json', () => {
             const deps = {
                 bootstrap: 'latest',
