@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { PackageJson } from '@storybook/types';
 import { babelPrint, readConfig } from '@storybook/csf-tools';
+import prompt from 'prompts';
 import { resolve } from 'node:path';
 
 import { tailwindStrategy } from './tailwind.strategy';
@@ -90,6 +91,86 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
                   },
               };
               export default config;
+              "
+            `);
+        });
+    });
+
+    describe("PREVIEW: how should storybook's preview be configured for themes", () => {
+        it('CLASSNAME: withThemeByClassName should be configured when the user selects className', async () => {
+            const previewConfig = await readConfig(resolve(__dirname, '../../../../fixtures/preview.fixture.ts'));
+            const meta: StorybookProjectMeta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-webpack5',
+                builder: SUPPORTED_BUILDERS.WEBPACK,
+            };
+
+            prompt.inject(['withThemeByClassName']);
+
+            await tailwindStrategy.preview(previewConfig, meta);
+
+            const result = babelPrint(previewConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { Preview } from \\"@storybook/react\\";
+
+              import { withThemeByClassName } from \\"@storybook/addon-themes\\";
+
+              const preview: Preview = {
+                parameters: {
+                  theming: {},
+                },
+
+                decorators: [withThemeByClassName({
+                    themes: {
+                        // nameOfTheme: 'classNameForTheme',
+                        light: '',
+                        dark: 'dark',
+                    },
+                    defaultTheme: 'light',
+                })],
+              };
+
+              export default preview;
+              "
+            `);
+        });
+
+        it('DATA ATTRIBUTE: withThemeByDataAttribute should be configured when the user selects data-attribute', async () => {
+            const previewConfig = await readConfig(resolve(__dirname, '../../../../fixtures/preview.fixture.ts'));
+            const meta: StorybookProjectMeta = {
+                packageManager: mockPackageManager,
+                framework: '@storybook/react-webpack5',
+                builder: SUPPORTED_BUILDERS.WEBPACK,
+            };
+
+            prompt.inject(['withThemeByDataAttribute']);
+            await tailwindStrategy.preview(previewConfig, meta);
+
+            const result = babelPrint(previewConfig._ast);
+
+            expect(result).toMatchInlineSnapshot(`
+              "import type { Preview } from \\"@storybook/react\\";
+
+              import { withThemeByDataAttribute } from \\"@storybook/addon-themes\\";
+
+              const preview: Preview = {
+                parameters: {
+                  theming: {},
+                },
+
+                decorators: [withThemeByDataAttribute({
+                    themes: {
+                        // nameOfTheme: 'dataAttributeForTheme',
+                        light: '',
+                        dark: 'dark',
+                    },
+                    defaultTheme: 'light',
+                    dataAttribute: 'data-theme',
+                })],
+              };
+
+              export default preview;
               "
             `);
         });
