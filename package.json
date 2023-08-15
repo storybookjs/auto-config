@@ -1,7 +1,7 @@
 {
-    "name": "configuration-helper",
-    "version": "0.0.0",
-    "description": "",
+    "name": "@storybook/auto-config",
+    "version": "0.0.0-beta.0",
+    "description": "A collection of codemods to configure Storybook addons automatically",
     "main": "index.js",
     "bin": "./index.js",
     "scripts": {
@@ -9,16 +9,21 @@
         "build:watch": "tsup --watch",
         "test": "vitest"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "storybook",
+        "codemod",
+        "configuration"
+    ],
+    "author": {
+        "name": "Shaun Evening",
+        "email": "shaun@chromatic.com"
+    },
     "license": "ISC",
     "devDependencies": {
         "@babel/core": "^7.22.9",
         "@babel/traverse": "^7.22.8",
         "@babel/types": "^7.22.5",
-        "@storybook/cli": "^7.2.1",
-        "@storybook/csf-tools": "^7.2.0",
-        "@storybook/types": "^7.2.0",
+        "@storybook/types": "^7.3.0",
         "@types/node": "^20.4.5",
         "@types/prompts": "^2.4.4",
         "auto": "^11.0.0",
@@ -38,6 +43,8 @@
         "webpack": "^5.88.2"
     },
     "dependencies": {
-        "@storybook/node-logger": "^7.2.0"
+        "@storybook/cli": "^7.3.0",
+        "@storybook/csf-tools": "^7.3.0",
+        "@storybook/node-logger": "^7.3.0"
     }
 }
