@@ -7,6 +7,7 @@
     "scripts": {
         "build": "tsup",
         "build:watch": "tsup --watch",
+        "release": "pnpm build && auto shipit",
         "test": "vitest"
     },
     "keywords": [
@@ -19,6 +20,11 @@
         "email": "shaun@chromatic.com"
     },
     "license": "ISC",
+    "files": [
+        "bin/**/*",
+        "README.md",
+        "index.js"
+    ],
     "devDependencies": {
         "@babel/core": "^7.22.9",
         "@babel/traverse": "^7.22.8",
