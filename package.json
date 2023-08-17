@@ -19,7 +19,7 @@
         "name": "Shaun Evening",
         "email": "shaun@chromatic.com"
     },
-    "license": "ISC",
+    "license": "MIT",
     "files": [
         "bin/**/*",
         "README.md",
