@@ -21,7 +21,7 @@ import { Errors, buildSummary } from './helpers';
 export interface Options {}
 
 const autoConfigure = async ({}: Options = {}) => {
-    printWelcome('@storybook/addon-styling');
+    printWelcome('@storybook/addon-styling-webpack');
 
     const isGitDirty = (await isGitClean()) === false;
 

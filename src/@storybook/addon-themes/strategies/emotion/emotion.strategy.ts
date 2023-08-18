@@ -35,7 +35,7 @@ export const emotionStrategy: AddonThemesConfigurationStrategy = {
 
         const importsNode = createNode(`
     import { Global, css, ThemeProvider } from '@emotion/react';
-    import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+    import { withThemeFromJSXProvider } from '@storybook/addon-styling-webpack';
 
     /* TODO: update import for your custom theme configurations */
     import { lightTheme, darkTheme } from '../path/to/themes';

@@ -33,7 +33,7 @@ export const buildAddonConfig = (configMap: Partial<ConfigurationMap>): string =
     const config = setConfigWithDefaults(configMap);
 
     return dedent`({
-    name: "@storybook/addon-styling",
+    name: "@storybook/addon-styling-webpack",
     options: {${buildPluginsArray(config)}
       rules: [${generateCssRules(config)}${generateSassRules(config)}${generateLessRules(config)}],
     }

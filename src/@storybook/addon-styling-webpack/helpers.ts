@@ -7,7 +7,7 @@ import { StorybookProjectMeta } from 'src/utils/strategy.utils';
 const printUnsupportedBuilderError = () => {
     printError(
         'Unsupported builder',
-        dedent`"${colors.green.bold('@storybook/addon-styling')}" is for webpack projects only.
+        dedent`"${colors.green.bold('@storybook/addon-styling-webpack')}" is for webpack projects only.
 
         Please remove it from your project to avoid unneeded dependencies.`,
     );
@@ -17,7 +17,7 @@ const printUnsupportedFrameworkError = ({ framework }: StorybookProjectMeta) => 
     printError(
         'Unsupported framework',
         dedent`"${colors.green.bold(
-            '@storybook/addon-styling',
+            '@storybook/addon-styling-webpack',
         )}" should not be used for your Storybook. ${colors.blue.bold(
             framework,
         )} requires a very specific configuration to match the app environment and altering it is likely to cause problems.
