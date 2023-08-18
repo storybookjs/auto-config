@@ -13,7 +13,7 @@ import {
 import { isGitClean } from '../../utils/git.utils';
 import { commonQuestions } from '../../utils/prompts.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
-import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
+import { Builder, Framework, buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
 import { selectAddonStylingStrategy } from './strategies';
 import { Errors, buildSummary } from './helpers';
@@ -40,6 +40,11 @@ const autoConfigure = async ({}: Options = {}) => {
 
     if (Builder.isNot.webpack(projectMeta)) {
         Errors.unsupportedBuilder();
+        return;
+    }
+
+    if (Framework.is.angular(projectMeta) || Framework.is.nextJs(projectMeta)) {
+        Errors.unsupportedFramework(projectMeta);
         return;
     }
 
