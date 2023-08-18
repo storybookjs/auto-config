@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { babelPrint, readConfig } from '@storybook/csf-tools';
+import { printConfig, readConfig } from '@storybook/csf-tools';
 import { resolve } from 'node:path';
 
 import { emotionStrategy } from './emotion.strategy';
@@ -41,24 +41,24 @@ describe('[@storybook/addon-themes] CODEMOD: Emotion configuration', () => {
 
             emotionStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
-          "import type { StorybookConfig } from \\"@storybook/react-vite\\";
-          const config: StorybookConfig = {
-            stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-            addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
-            framework: {
-              name: \\"@storybook/react-vite\\",
-              options: {},
-            },
-            docs: {
-              autodocs: true,
-            },
-          };
-          export default config;
-          "
-        `);
+              "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+              const config: StorybookConfig = {
+                stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
+                addons: [\\"@storybook/addon-essentials\\", \\"@storybook/themes\\"],
+                framework: {
+                  name: \\"@storybook/react-vite\\",
+                  options: {},
+                },
+                docs: {
+                  autodocs: true,
+                },
+              };
+              export default config;
+              "
+            `);
         });
 
         it('NO DUPLICATION: addon-themes should not be registered more than once', async () => {
@@ -71,7 +71,7 @@ describe('[@storybook/addon-themes] CODEMOD: Emotion configuration', () => {
 
             emotionStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from '@storybook/react-webpack5';
@@ -104,7 +104,7 @@ describe('[@storybook/addon-themes] CODEMOD: Emotion configuration', () => {
 
             emotionStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -139,7 +139,7 @@ describe('[@storybook/addon-themes] CODEMOD: Emotion configuration', () => {
                   defaultTheme: 'light',
                   Provider: ThemeProvider,
                   GlobalStyles,
-                })],
+                })]
               };
 
               export default preview;

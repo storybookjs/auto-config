@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { PackageJson } from '@storybook/types';
-import { babelPrint, readConfig } from '@storybook/csf-tools';
+import { printConfig, readConfig } from '@storybook/csf-tools';
 import { resolve } from 'node:path';
+import mockPackageManager from '../../../../fixtures/package-manager.fixture';
 
 import { vanillaExtractStrategy } from './vanilla-extract.strategy';
 import { SUPPORTED_BUILDERS, StorybookProjectMeta } from '../../../../utils/strategy.utils';
@@ -34,16 +34,14 @@ describe('CODEMOD: vanilla-extract configuration', () => {
                 resolve(__dirname, '../../../../fixtures/main.react-webpack5.fixture.ts'),
             );
             const meta: StorybookProjectMeta = {
-                dependencies: { '@vanilla-extract/webpack-plugin': 'latest' },
-                devDependencies: { postcss: ' latest' },
-                peerDependencies: {},
+                packageManager: mockPackageManager,
                 framework: '@storybook/react-webpack5',
                 builder: SUPPORTED_BUILDERS.WEBPACK,
             };
 
             vanillaExtractStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
