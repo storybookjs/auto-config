@@ -61,6 +61,7 @@ export const customStrategy: AddonStylingConfigurationStrategy = {
         }
 
         const [addonConfigNode] = createNode(buildAddonConfig(configMap));
+        addonConfigNode.expression.extra = {};
 
         mainConfig.appendNodeToArray(['addons'], addonConfigNode.expression);
 

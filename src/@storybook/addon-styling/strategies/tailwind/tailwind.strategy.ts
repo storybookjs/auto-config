@@ -17,6 +17,7 @@ export const tailwindStrategy: AddonStylingConfigurationStrategy = {
                 postcss: true,
             }),
         );
+        addonConfigNode.expression.extra = {};
 
         mainConfig.appendNodeToArray(['addons'], addonConfigNode.expression);
 

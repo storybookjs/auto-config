@@ -24,6 +24,7 @@ export const vanillaExtractStrategy: AddonStylingConfigurationStrategy = {
                 vanillaExtract: true,
             }),
         );
+        addonConfigNode.expression.extra = {};
 
         mainConfig.appendNodeToArray(['addons'], addonConfigNode);
 

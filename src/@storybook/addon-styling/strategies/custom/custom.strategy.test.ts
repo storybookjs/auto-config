@@ -30,7 +30,7 @@ describe('CODEMOD: fallback configuration', () => {
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", ({
+                addons: [\\"@storybook/addon-essentials\\", {
                   name: \\"@storybook/addon-styling\\",
 
                   options: {
@@ -54,7 +54,7 @@ describe('CODEMOD: fallback configuration', () => {
                   ],
                 },],
                   }
-                })],
+                }],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
@@ -87,7 +87,7 @@ describe('CODEMOD: fallback configuration', () => {
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", ({
+                addons: [\\"@storybook/addon-essentials\\", {
                     name: \\"@storybook/addon-styling\\",
 
                     options: {
@@ -139,7 +139,7 @@ describe('CODEMOD: fallback configuration', () => {
                     ],
                   },],
                     }
-                })],
+                }],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
@@ -174,7 +174,7 @@ describe('CODEMOD: fallback configuration', () => {
               import MiniCssExtractPlugin from \\"mini-css-extract-plugin\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", ({
+                addons: [\\"@storybook/addon-essentials\\", {
                     name: \\"@storybook/addon-styling\\",
 
                     options: {plugins: [new VanillaExtractPlugin(), new MiniCssExtractPlugin()],
@@ -229,7 +229,7 @@ describe('CODEMOD: fallback configuration', () => {
                     ],
                   },],
                     }
-                })],
+                }],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
