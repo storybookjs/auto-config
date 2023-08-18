@@ -13,7 +13,7 @@ import {
 import { isGitClean } from '../../utils/git.utils';
 import { commonQuestions } from '../../utils/prompts.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
-import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
+import { buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
 import { selectAddonThemesStrategy } from './strategies';
 import { buildSummary } from './helpers';

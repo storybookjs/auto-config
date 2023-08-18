@@ -1,4 +1,4 @@
-import { logger, colors } from '@storybook/node-logger';
+import { colors } from '@storybook/node-logger';
 
 import { ChangeSummary } from '../../../../utils/strategy.utils';
 import { addImports, createNode } from '../../../../utils/ast.utils';

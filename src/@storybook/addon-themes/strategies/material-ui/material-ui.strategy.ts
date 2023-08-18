@@ -1,4 +1,4 @@
-import { logger, colors } from '@storybook/node-logger';
+import { colors } from '@storybook/node-logger';
 
 import { addImports, createNode } from '../../../../utils/ast.utils';
 import { ChangeSummary } from '../../../../utils/strategy.utils';
@@ -60,7 +60,6 @@ export const materialUIStrategy: AddonThemesConfigurationStrategy = {
 
         addImports(previewConfig._ast, importsNode);
 
-        logger.plain(`  • Adding ${colors.blue('withThemeFromJSXProvider')} decorator to config`);
         const [decoratorNode] = createNode(`// Adds global styles and theme switching support.
 withThemeFromJSXProvider({
   GlobalStyles: CssBaseline,
