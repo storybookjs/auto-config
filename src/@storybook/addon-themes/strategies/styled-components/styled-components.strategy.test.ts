@@ -110,7 +110,7 @@ describe('[@storybook/addon-themes] CODEMOD: Styled Components configuration', (
               "import type { Preview } from \\"@storybook/react\\";
 
               import { createGlobalStyle, ThemeProvider } from 'styled-components';
-              import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+              import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 
               /* TODO: update import for your custom theme configurations */
               import { lightTheme, darkTheme } from '../path/to/themes';
