@@ -22,7 +22,10 @@ command('styling')
         )}"`,
     )
     .action(() => {
-        configureAddonStylingWebpack().catch(() => process.exit(1));
+        configureAddonStylingWebpack().catch((e) => {
+            logger.error(e);
+            process.exit(1);
+        });
     });
 
 command('themes')
@@ -32,7 +35,10 @@ command('themes')
         )}"`,
     )
     .action(() => {
-        configureAddonThemes().catch(() => process.exit(1));
+        configureAddonThemes().catch((e) => {
+            logger.error(e);
+            process.exit(1);
+        });
     });
 
 program.on('command:*', ([invalidCmd]) => {
