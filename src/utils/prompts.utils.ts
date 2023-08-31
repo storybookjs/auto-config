@@ -25,6 +25,28 @@ const shouldQuitWithDirtyGit = async (): Promise<boolean> => {
     return shouldQuit;
 };
 
+const shouldQuitWithoutGit = async (): Promise<boolean> => {
+    printWarning(
+        '💬 Before we continue',
+        dedent`I was unable to detect a git repository in your project.
+      
+      I recommend that you initialize one and make an initial commit before running this command.`,
+    );
+
+    const { shouldQuit } = await prompts(
+        {
+            type: 'confirm',
+            name: 'shouldQuit',
+            message: 'Do you want to quit?',
+            initial: true,
+        },
+        { onCancel: () => process.exit(0) },
+    );
+
+    return shouldQuit;
+};
+
 export const commonQuestions = {
     shouldQuitWithDirtyGit,
+    shouldQuitWithoutGit,
 };
