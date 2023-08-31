@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
-import { babelPrint, readConfig } from '@storybook/csf-tools';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { printConfig, readConfig } from '@storybook/csf-tools';
 import { resolve } from 'node:path';
 
 import { materialUIStrategy } from './material-ui.strategy';
@@ -43,24 +43,24 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
 
             materialUIStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
-          "import type { StorybookConfig } from \\"@storybook/react-vite\\";
-          const config: StorybookConfig = {
-            stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-            addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
-            framework: {
-              name: \\"@storybook/react-vite\\",
-              options: {},
-            },
-            docs: {
-              autodocs: true,
-            },
-          };
-          export default config;
-          "
-        `);
+              "import type { StorybookConfig } from \\"@storybook/react-vite\\";
+              const config: StorybookConfig = {
+                stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
+                addons: [\\"@storybook/addon-essentials\\", \\"@storybook/themes\\"],
+                framework: {
+                  name: \\"@storybook/react-vite\\",
+                  options: {},
+                },
+                docs: {
+                  autodocs: true,
+                },
+              };
+              export default config;
+              "
+            `);
         });
 
         it('NO DUPLICATION: addon-themes should not be registered in the addons array more than once', async () => {
@@ -74,7 +74,7 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
 
             materialUIStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from '@storybook/react-webpack5';
@@ -110,7 +110,7 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
 
             await materialUIStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -135,7 +135,7 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
                     dark: darkTheme,
                   },
                   defaultTheme: 'light',
-                })],
+                })]
               };
 
               export default preview;
@@ -158,7 +158,7 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
 
             await materialUIStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -188,7 +188,7 @@ describe('[@storybook/addon-themes] CODEMOD: Material UI configuration', () => {
                     dark: darkTheme,
                   },
                   defaultTheme: 'light',
-                })],
+                })]
               };
 
               export default preview;

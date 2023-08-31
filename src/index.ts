@@ -3,14 +3,14 @@ import { readPackageUpSync } from 'read-pkg-up';
 import leven from 'leven';
 import { logger, colors } from '@storybook/node-logger';
 
-import configureAddonStyling from './@storybook/addon-styling';
+import configureAddonStylingWebpack from './@storybook/addon-styling-webpack';
 import configureAddonThemes from './@storybook/addon-themes';
 import { PackageJson } from '@storybook/types';
 
 const pkg = readPackageUpSync({ cwd: __dirname }).packageJson as PackageJson;
 
 const codeMods: Record<string, Function> = {
-    styling: configureAddonStyling,
+    styling: configureAddonStylingWebpack,
 };
 
 const command = (name: string) => program.name('@storybook/auto-config').command(name);
@@ -18,11 +18,11 @@ const command = (name: string) => program.name('@storybook/auto-config').command
 command('styling')
     .description(
         `Configures styles for your ${colors.blue.bold('webpack')} Storybook using "${colors.pink.bold(
-            '@storybook/addon-styling',
+            '@storybook/addon-styling-webpack',
         )}"`,
     )
     .action(() => {
-        configureAddonStyling().catch(() => process.exit(1));
+        configureAddonStylingWebpack().catch(() => process.exit(1));
     });
 
 command('themes')

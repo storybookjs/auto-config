@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { PackageJson } from '@storybook/types';
-import { babelPrint, readConfig } from '@storybook/csf-tools';
+import { printConfig, readConfig } from '@storybook/csf-tools';
 import prompt from 'prompts';
 import { resolve } from 'node:path';
 
@@ -45,13 +45,13 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
 
             tailwindStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
+                addons: [\\"@storybook/addon-essentials\\", \\"@storybook/themes\\"],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
@@ -75,7 +75,7 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
 
             tailwindStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from '@storybook/react-webpack5';
@@ -109,7 +109,7 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
 
             await tailwindStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -128,7 +128,7 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
                         dark: 'dark',
                     },
                     defaultTheme: 'light',
-                })],
+                })]
               };
 
               export default preview;
@@ -147,7 +147,7 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
             prompt.inject(['withThemeByDataAttribute']);
             await tailwindStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -167,7 +167,7 @@ describe('[@storybook/addon-themes] CODEMOD: tailwind configuration', () => {
                     },
                     defaultTheme: 'light',
                     dataAttribute: 'data-theme',
-                })],
+                })]
               };
 
               export default preview;
