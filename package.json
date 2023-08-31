@@ -2,11 +2,13 @@
     "name": "@storybook/auto-config",
     "version": "0.0.0-beta.0",
     "description": "A collection of codemods to configure Storybook addons automatically",
+    "private": false,
     "main": "index.js",
     "bin": "./index.js",
     "scripts": {
         "build": "tsup",
         "build:watch": "tsup --watch",
+        "release": "pnpm build && auto shipit",
         "test": "vitest"
     },
     "keywords": [
@@ -18,7 +20,12 @@
         "name": "Shaun Evening",
         "email": "shaun@chromatic.com"
     },
-    "license": "ISC",
+    "license": "MIT",
+    "files": [
+        "bin/**/*",
+        "README.md",
+        "index.js"
+    ],
     "devDependencies": {
         "@babel/core": "^7.22.9",
         "@babel/traverse": "^7.22.8",

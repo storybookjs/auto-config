@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { babelPrint, readConfig } from '@storybook/csf-tools';
+import { printConfig, readConfig } from '@storybook/csf-tools';
 import { resolve } from 'node:path';
 
 import { vanillaExtractStrategy } from './vanilla-extract.strategy';
@@ -43,13 +43,13 @@ describe('[@storybook/addon-themes] CODEMOD: vanilla-extract configuration', () 
 
             vanillaExtractStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from \\"@storybook/react-webpack5\\";
               const config: StorybookConfig = {
                 stories: [\\"../stories/**/*.stories.@(js|jsx|ts|tsx)\\"],
-                addons: [\\"@storybook/addon-essentials\\", '@storybook/themes'],
+                addons: [\\"@storybook/addon-essentials\\", \\"@storybook/themes\\"],
                 framework: {
                   name: \\"@storybook/react-webpack5\\",
                   options: {},
@@ -74,7 +74,7 @@ describe('[@storybook/addon-themes] CODEMOD: vanilla-extract configuration', () 
 
             vanillaExtractStrategy.main(mainConfig, meta);
 
-            const result = babelPrint(mainConfig._ast);
+            const result = printConfig(mainConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { StorybookConfig } from '@storybook/react-webpack5';
@@ -107,7 +107,7 @@ describe('[@storybook/addon-themes] CODEMOD: vanilla-extract configuration', () 
 
             await vanillaExtractStrategy.preview(previewConfig, meta);
 
-            const result = babelPrint(previewConfig._ast);
+            const result = printConfig(previewConfig).code;
 
             expect(result).toMatchInlineSnapshot(`
               "import type { Preview } from \\"@storybook/react\\";
@@ -129,7 +129,7 @@ describe('[@storybook/addon-themes] CODEMOD: vanilla-extract configuration', () 
                         dark: darkThemeClass,
                     },
                     defaultTheme: 'light',
-                })],
+                })]
               };
 
               export default preview;
