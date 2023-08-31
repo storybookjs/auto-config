@@ -23,10 +23,15 @@ export interface Options {}
 const autoConfigure = async ({}: Options = {}) => {
     printWelcome('@storybook/addon-styling-webpack');
 
-    const isGitDirty = (await isGitClean()) === false;
+    try {
+        const isGitDirty = (await isGitClean()) === false;
 
-    if (isGitDirty) {
-        const shouldQuit = await commonQuestions.shouldQuitWithDirtyGit();
+        if (isGitDirty) {
+            const shouldQuit = await commonQuestions.shouldQuitWithDirtyGit();
+            if (shouldQuit) return;
+        }
+    } catch (e) {
+        const shouldQuit = await commonQuestions.shouldQuitWithoutGit();
         if (shouldQuit) return;
     }
 
