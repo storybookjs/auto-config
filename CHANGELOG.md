@@ -1,3 +1,15 @@
+# v0.0.2 (Thu Mar 07 2024)
+
+#### 🐛 Bug Fix
+
+- Rename @storybook/themes to @storybook/addon-themes [#8](https://github.com/storybookjs/auto-config/pull/8) ([@valentinpalkovic](https://github.com/valentinpalkovic))
+
+#### Authors: 1
+
+- Valentin Palkovic ([@valentinpalkovic](https://github.com/valentinpalkovic))
+
+---
+
 # v0.0.1 (Thu Aug 31 2023)
 
 #### 🐛 Bug Fix
