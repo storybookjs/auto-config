@@ -18,13 +18,13 @@ export const materialUIStrategy: AddonThemesConfigurationStrategy = {
         };
 
         const hasThemesAddon = mainConfig.getFieldValue(['addons']).some((addon: string | { name: string }) => {
-            if (typeof addon === 'string') return addon === '@storybook/themes';
-            return addon.name === '@storybook/themes';
+            if (typeof addon === 'string') return addon === '@storybook/addon-themes';
+            return addon.name === '@storybook/addon-themes';
         });
 
         if (!hasThemesAddon) {
-            mainConfig.appendValueToArray(['addons'], '@storybook/themes');
-            summary.changed.push(`Added ${colors.pink.bold('@storybook/themes')} to your addons`);
+            mainConfig.appendValueToArray(['addons'], '@storybook/addon-themes');
+            summary.changed.push(`Added ${colors.pink.bold('@storybook/addon-themes')} to your addons`);
         }
 
         return summary;
