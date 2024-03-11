@@ -1,3 +1,15 @@
+# v0.0.3 (Mon Mar 11 2024)
+
+#### 🐛 Bug Fix
+
+- Remove git dirty guard [#9](https://github.com/storybookjs/auto-config/pull/9) ([@valentinpalkovic](https://github.com/valentinpalkovic))
+
+#### Authors: 1
+
+- Valentin Palkovic ([@valentinpalkovic](https://github.com/valentinpalkovic))
+
+---
+
 # v0.0.2 (Thu Mar 07 2024)
 
 #### 🐛 Bug Fix
