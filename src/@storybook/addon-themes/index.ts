@@ -10,8 +10,6 @@ import {
     printScriptSummary,
     printWarning,
 } from '../../utils/output.utils';
-import { isGitClean } from '../../utils/git.utils';
-import { commonQuestions } from '../../utils/prompts.utils';
 import { getMainConfig, getPreviewConfig } from '../../utils/configs.utils';
 import { Builder, buildStorybookProjectMeta } from '../../utils/metadata.utils';
 
@@ -22,18 +20,6 @@ export interface Options {}
 
 const autoConfigure = async ({}: Options = {}) => {
     printWelcome('@storybook/addon-themes');
-
-    try {
-        const isGitDirty = (await isGitClean()) === false;
-
-        if (isGitDirty) {
-            const shouldQuit = await commonQuestions.shouldQuitWithDirtyGit();
-            if (shouldQuit) return;
-        }
-    } catch (e) {
-        const shouldQuit = await commonQuestions.shouldQuitWithoutGit();
-        if (shouldQuit) return;
-    }
 
     // Step 1: load Storybook config files
     const packageManager = JsPackageManagerFactory.getPackageManager();
